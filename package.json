@@ -7,6 +7,8 @@
   "scripts": {
     "start": "node dist/main.js",
     "dev": "nodemon",
+    "dev:inspect": "nodemon -e ts,json --exec node --inspect=localhost:9229 -r ts-node/register src/main.ts",
+    "diagnostic": "clinic doctor --on-port 'autocannon -m POST localhost:8000/users/register' -- node dist/main.js",
     "lint": "eslint ./src/**",
     "lint:fix": "eslint ./src/** --fix",
     "build": "tsc",
