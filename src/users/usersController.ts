@@ -26,14 +26,25 @@ export class UsersController extends BaseController implements IUsersController 
 				func: this.register,
 				middlewares: [new ValidateMiddleware(UserRegisterDto)],
 			},
-			{ path: '/login', method: 'post', func: this.login },
+			{
+				path: '/login',
+				method: 'post',
+				func: this.login,
+				middlewares: [new ValidateMiddleware(UserLoginDto)],
+			},
 		]);
 	}
 
-	login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
-		console.log(req.body);
-		this.ok(res, 'login');
-		// next(new HttpError(401, 'Error auth'))
+	async login(
+		req: Request<{}, {}, UserLoginDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const result = await this.userService.validateUser(req.body);
+		if (!result) {
+			return next(new HttpError(401, 'Error auth', 'login'));
+		}
+		this.ok(res, {});
 	}
 
 	async register(
@@ -47,6 +58,6 @@ export class UsersController extends BaseController implements IUsersController 
 			return next(new HttpError(422, 'Такой пользователь уже существует'));
 		}
 
-		this.ok(res, { email: result.email });
+		this.ok(res, { email: result.email, id: result.id });
 	}
 }
