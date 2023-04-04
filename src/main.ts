@@ -10,6 +10,8 @@ import 'reflect-metadata';
 import { IUserService } from './users/userServiceInterface';
 import { UserService } from './users/userService';
 import { IUsersController } from './users/usersControllerInterface';
+import { ConfigService } from './config/configService';
+import { IConfigService } from './config/configServiceIntreface';
 
 export interface IBootstrapReturn {
 	appContainer: Container;
@@ -17,10 +19,11 @@ export interface IBootstrapReturn {
 }
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-	bind<ILogger>(TYPES.ILogger).to(LoggerService);
+	bind<ILogger>(TYPES.ILogger).to(LoggerService).inSingletonScope();
 	bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter);
 	bind<IUsersController>(TYPES.UserController).to(UsersController);
 	bind<IUserService>(TYPES.UserService).to(UserService);
+	bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
 	bind<App>(TYPES.Application).to(App);
 });
 
