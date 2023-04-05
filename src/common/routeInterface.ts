@@ -1,6 +1,4 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { interfaces } from 'inversify';
-import Middleware = interfaces.Middleware;
 import { IMiddleware } from './middlewareInterface';
 
 export interface IControllerRoute {
